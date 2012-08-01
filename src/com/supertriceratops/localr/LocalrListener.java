@@ -13,16 +13,19 @@ public class LocalrListener implements LocationListener {
 	private TextView typeView;
 	private DecimalFormat df;
 	private String deviceId;
+	private int count;
 	
 	LocalrListener(TextView l, TextView t, String id) {
 		locationView = l;
 		typeView = t;
 		deviceId = id;
-		df = new DecimalFormat("#.##");
+		count = 0;
+		df = new DecimalFormat("#.####");
 	}
 	
 	public void onLocationChanged(Location location) {
-		locationView.setText("(" + df.format(location.getLatitude()) + ", " 
+		count++;
+		locationView.setText(count + " (" + df.format(location.getLatitude()) + ", " 
 				+ df.format(location.getLongitude()) + ")");
 		new Checker(typeView, deviceId).execute(location);
 	}

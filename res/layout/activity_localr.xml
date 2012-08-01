@@ -31,4 +31,37 @@
         android:layout_marginTop="16dp"
         android:text="None" />
 
+    <RadioGroup
+        android:id="@+id/locationType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/deviceId"
+        android:layout_marginBottom="71dp"
+        android:layout_marginRight="14dp" >
+
+        <RadioButton
+            android:id="@+id/gps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="handleNetworkChoice"
+            android:checked="true"
+            android:text="GPS" />
+
+        <RadioButton
+            android:id="@+id/network"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="handleNetworkChoice"
+            android:text="Network" />
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/triceratops_front" />
+
 </RelativeLayout>
