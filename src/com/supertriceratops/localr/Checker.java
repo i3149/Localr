@@ -19,6 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.location.Location;
 import android.os.AsyncTask;
@@ -79,9 +80,12 @@ public class Checker extends AsyncTask<Location, Integer, String> {
 	protected void onPostExecute(String raw) {
 		if (raw != null) {
 			try {
-				JSONArray jsonArray = new JSONArray(raw);
+				
+				JSONObject obj = new JSONObject(raw);
+				JSONArray jsonArray = obj.getJSONArray("types");
+				String name = obj.getString("name");
 				if (jsonArray.length() > 0) {
-					view.setText(jsonArray.getString(0));
+					view.setText(name + ": " + jsonArray.getString(0));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();	

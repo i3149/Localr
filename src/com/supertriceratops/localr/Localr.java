@@ -1,14 +1,17 @@
 package com.supertriceratops.localr;
 
-
 import java.util.UUID;
 
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.RadioButton;
@@ -23,6 +26,9 @@ public class Localr extends Activity {
 	private LocationManager locationManager;
 	private LocalrListener listener;
 	private String deviceId;
+	private SensorManager mSensorManager;
+	private Sensor mSensor;
+	private SoundPlayer player;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,16 @@ public class Localr extends Activity {
         locationView.setText("Starting Service");
         typeView.setText("SS");
         idView.setText(deviceId);
+        
+        // And enable the sensor.
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        } else {
+        	Log.e("Checker", "No Acceleromiter found");	
+        }
+                
+        player = new SoundPlayer((AudioManager)getSystemService(Context.AUDIO_SERVICE), this);
     }
 
     @Override
@@ -67,6 +83,18 @@ public class Localr extends Activity {
     protected void onStop() { 
     	super.onStop();
     	locationManager.removeUpdates(listener);
+    }
+    
+    @Override
+    protected void onResume() {
+      super.onResume();
+      mSensorManager.registerListener(player, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+      super.onPause();
+      mSensorManager.unregisterListener(player);
     }
     
     public void handleNetworkChoice(View view) {
@@ -94,10 +122,5 @@ public class Localr extends Activity {
         	new Checker(typeView, deviceId).execute(last);
         }
     }
+    
 }
-
-/*
-
-
-    }
-*/
